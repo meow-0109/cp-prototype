@@ -1,97 +1,267 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Smart Tourist Safety Prototype</title>
-    <link rel="stylesheet" href="cp1.css"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Tourist Safety - Tailwind UI</title>
+     <script src="cp1.js"></script>
+     <link rel="stylesheet" href="cp1.css">
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- Tailwind Play CDN (good for prototypes) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS/JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    #map { height: 300px; margin-top: 20px; }
-    .section { margin-bottom: 20px; }
+    /* map height when inside a flex column */
+    #map { height: 380px; min-height: 280px; border-radius: 0.5rem; overflow: hidden; }
   </style>
 </head>
-<body>
-  <h1>Smart Tourist Safety Prototype</h1>
+<body class="bg-slate-50 text-slate-800">
 
-  <!-- 1. Tourist Registration -->
-  <div class="section">
-    <h2>1. Tourist Registration</h2>
-    Name: <input type="text" id="name"><br>
-    Age: <input type="number" id="age"><br>
-    Contact: <input type="text" id="contact"><br>
-    <button onclick="registerTourist()">Register & Generate QR</button>
-    <div id="qrcode"></div>
+  <header class="bg-white shadow p-4">
+    <div class="max-w-6xl mx-auto flex items-center gap-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" alt="logo" class="w-10 h-10"/>
+      <h1 class="text-xl font-semibold">Smart Tourist Safety — Prototype</h1>
+      <div class="ml-auto text-sm text-slate-500">Live location + geofencing</div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left column: Registration & Controls -->
+    <section class="col-span-1 space-y-6">
+      <!-- Registration Card -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-lg font-medium mb-3">Tourist Registration</h2>
+        <div class="space-y-3">
+          <input id="name" type="text" placeholder="Name" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-400"/>
+          <input id="age" type="number" placeholder="Age" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-400"/>
+          <input id="contact" type="text" placeholder="Contact" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-sky-400"/>
+          <div class="flex gap-2">
+            <button id="registerBtn" class="px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700">Register & Generate QR</button>
+            <button id="clearQR" class="px-4 py-2 border rounded-md hover:bg-slate-50">Clear</button>
+          </div>
+          <div id="qrcode" class="mt-3"></div>
+        </div>
+      </div>
+
+      <!-- Crowd Card -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-lg font-medium mb-3">Crowd Check</h2>
+        <div class="flex gap-2 items-center">
+          <input id="crowdCount" type="number" placeholder="Number of people" class="px-3 py-2 border rounded-md w-full"/>
+          <button id="crowdBtn" class="px-3 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">Check</button>
+        </div>
+        <p class="mt-3 text-sm text-slate-500">If crowd > 50, the system will mark it high density.</p>
+      </div>
+
+      <!-- Incident Card -->
+      <div class="bg-white rounded-lg shadow p-5">
+        <h2 class="text-lg font-medium mb-3">Incident / SOS</h2>
+        <p class="text-sm text-slate-600 mb-3">Report an incident to authorities (simulated).</p>
+        <div class="flex gap-2">
+          <button id="openIncident" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Report Incident</button>
+          <button id="testToast" class="px-4 py-2 border rounded-md">Test Alert</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Middle & Right: Map + Info -->
+    <section class="col-span-2 space-y-6">
+      <div class="bg-white rounded-lg shadow p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-medium">Map — Live Tracking</h2>
+          <div class="text-sm text-slate-500">GPS accuracy: <span id="accuracy">—</span> m</div>
+        </div>
+
+        <div id="map"></div>
+        <div class="mt-4 flex gap-2">
+          <button id="centerBtn" class="px-3 py-2 bg-sky-600 text-white rounded-md">Center on Me</button>
+          <button id="toggleFollow" class="px-3 py-2 border rounded-md">Toggle Follow</button>
+          <div class="ml-auto text-sm text-slate-500">Example restricted zone shown in <span class="text-red-600 font-semibold">red</span>.</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-4">
+        <h3 class="font-medium mb-2">Status Log</h3>
+        <div id="log" class="text-sm text-slate-600 max-h-36 overflow-auto p-2 bg-slate-50 rounded"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="fixed right-6 bottom-6 space-y-3 z-50"></div>
+
+  <!-- Incident Modal (hidden by default) -->
+  <div id="incidentModal" class="fixed inset-0 flex items-center justify-center bg-black/50 hidden z-40">
+    <div class="bg-white rounded-lg w-full max-w-md p-5 shadow">
+      <h3 class="text-lg font-semibold mb-3">Report Incident</h3>
+      <textarea id="incidentText" rows="4" placeholder="Describe the incident..." class="w-full px-3 py-2 border rounded-md"></textarea>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="closeIncident" class="px-4 py-2 border rounded-md">Cancel</button>
+        <button id="submitIncident" class="px-4 py-2 bg-red-600 text-white rounded-md">Send</button>
+      </div>
+    </div>
   </div>
 
-  <!-- 2. Map & Geo-fencing -->
-  <div class="section">
-    <h2>2. Map & Geo-fencing</h2>
-    <div id="map"></div>
-    <button onclick="simulateLocation()">Simulate Tourist Location</button>
-  </div>
-
-  <!-- 3. Crowd Alert -->
-  <div class="section">
-    <h2>3. Crowd Alert</h2>
-    Enter number of people at location: <input type="number" id="crowdCount">
-    <button onclick="checkCrowd()">Check</button>
-  </div>
-
-  <!-- 4. Incident Reporting -->
-  <div class="section">
-    <h2>4. Incident Reporting</h2>
-    <button onclick="reportIncident()">Report Help</button>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- QR library (same as you used) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script>
-  // 1. Tourist Registration
-  function registerTourist() {
-    var name = document.getElementById("name").value;
-    var age = document.getElementById("age").value;
-    var contact = document.getElementById("contact").value;
-    var data = `Name: ${name}, Age: ${age}, Contact: ${contact}`;
-    document.getElementById("qrcode").innerHTML = "";
-    new QRCode(document.getElementById("qrcode"), data);
-    alert("Tourist Registered!");
-  }
+    // ========== Map setup ==========
+    const map = L.map('map').setView([25.0, 82.5], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-  // 2. Map & Geo-fencing
-  var map = L.map('map').setView([25.0, 82.5], 15);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  var restrictedZone = L.circle([25.002, 82.502], {radius: 100, color:'red'}).addTo(map);
+    // Example restricted zone (you can fetch many from backend later)
+    const restrictedZone = L.circle([25.002, 82.502], { radius: 100, color: 'red', fillOpacity: 0.06 }).addTo(map);
+    const restrictedLabel = L.marker(restrictedZone.getLatLng(), { interactive: false }).addTo(map)
+      .bindTooltip("Restricted Zone", { permanent: true, direction: 'top', className: 'bg-red-600 text-white rounded px-2 py-0.5' }).openTooltip();
 
-  function simulateLocation() {
-    var touristLat = 25.001 + Math.random()*0.005;
-    var touristLng = 82.501 + Math.random()*0.005;
-    L.marker([touristLat, touristLng]).addTo(map).bindPopup("Tourist Location").openPopup();
-    var distance = map.distance([touristLat, touristLng], restrictedZone.getLatLng());
-    if(distance < restrictedZone.getRadius()) alert("ALERT: Entered Restricted Zone!");
-    else alert("Tourist in Safe Zone");
-  }
+    // user marker + follow mode
+    let userMarker = null;
+    let followUser = true;
 
-  // 3. Crowd Alert
-  function checkCrowd() {
-      var count = parseInt(document.getElementById("crowdCount").value);
-      if (isNaN(count)) {
-          alert("Please enter a valid number");
-          return;
+    // helper: log
+    function log(msg) {
+      const d = new Date().toLocaleTimeString();
+      const el = document.getElementById('log');
+      el.innerHTML = `<div class="py-0.5">[${d}] ${msg}</div>` + el.innerHTML;
+    }
+
+    // ========== Toasts (non-blocking) ==========
+    function showToast(type, message, ttl = 6000) {
+      // type: 'info' | 'success' | 'warn' | 'error'
+      const colors = {
+        info: 'bg-sky-600',
+        success: 'bg-green-600',
+        warn: 'bg-yellow-500 text-slate-900',
+        error: 'bg-red-600'
+      };
+      const container = document.getElementById('toastContainer');
+      const id = 't' + Date.now();
+      const div = document.createElement('div');
+      div.id = id;
+      div.className = `max-w-sm p-3 rounded shadow text-white ${colors[type] || colors.info} flex items-start gap-2`;
+      div.innerHTML = `<div class="flex-1 text-sm">${message}</div>
+                       <button class="text-white/80 ml-2">✕</button>`;
+      container.appendChild(div);
+      // close on click
+      div.querySelector('button').addEventListener('click', () => div.remove());
+      // auto-remove
+      setTimeout(() => div.remove(), ttl);
+    }
+
+    // ========== Registration (QR) ==========
+    document.getElementById('registerBtn').addEventListener('click', () => {
+      const name = document.getElementById('name').value || 'Anonymous';
+      const age = document.getElementById('age').value || '-';
+      const contact = document.getElementById('contact').value || '-';
+      const data = `Name:${name}|Age:${age}|Contact:${contact}|ts:${Date.now()}`;
+      document.getElementById('qrcode').innerHTML = '';
+      new QRCode(document.getElementById('qrcode'), { text: data, width: 140, height: 140 });
+      showToast('success', 'Tourist registered and QR generated.');
+      log('Registered tourist: ' + name);
+    });
+    document.getElementById('clearQR').addEventListener('click', () => {
+      document.getElementById('qrcode').innerHTML = '';
+    });
+
+    // ========== Crowd Check ==========
+    document.getElementById('crowdBtn').addEventListener('click', () => {
+      const c = parseInt(document.getElementById('crowdCount').value || '0');
+      if (isNaN(c)) { showToast('warn', 'Please enter a valid number'); return; }
+      if (c > 50) {
+        showToast('warn', 'High crowd density detected!');
+        log('High crowd: ' + c);
+      } else {
+        showToast('success', 'Crowd level is safe');
+        log('Crowd check: ' + c);
       }
-      if(count > 50) alert("ALERT: High Crowd Density!");
-      else alert("Crowd Safe");
-  }
+    });
 
-  // 4. Incident Reporting
-  function reportIncident() {
-      alert("Incident reported! Authorities will be notified.");
-  }
+    // ========== Incident Modal ==========
+    document.getElementById('openIncident').addEventListener('click', () => {
+      document.getElementById('incidentModal').classList.remove('hidden');
+    });
+    document.getElementById('closeIncident').addEventListener('click', () => {
+      document.getElementById('incidentModal').classList.add('hidden');
+    });
+    document.getElementById('submitIncident').addEventListener('click', () => {
+      const text = document.getElementById('incidentText').value.trim();
+      if (!text) { showToast('warn', 'Enter incident details'); return; }
+      // TODO: POST to backend /api/reportIncident
+      document.getElementById('incidentModal').classList.add('hidden');
+      document.getElementById('incidentText').value = '';
+      showToast('info', 'Incident reported to authorities (simulated)');
+      log('Incident reported: ' + text);
+    });
+
+    // ========== Test toast button ==========
+    document.getElementById('testToast').addEventListener('click', () => {
+      showToast('info', 'This is a test alert — non-blocking');
+    });
+
+    // ========== Live location tracking (watchPosition) ==========
+    if ('geolocation' in navigator) {
+      navigator.geolocation.watchPosition(
+        pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const acc = Math.round(pos.coords.accuracy || 0);
+          document.getElementById('accuracy').innerText = acc;
+
+          // create or move user marker
+          if (!userMarker) {
+            userMarker = L.marker([lat, lng], {
+              title: 'You',
+              riseOnHover: true
+            }).addTo(map).bindPopup('You are here');
+          } else {
+            userMarker.setLatLng([lat, lng]);
+          }
+
+          // center map when follow mode on
+          if (followUser) {
+            map.setView([lat, lng], map.getZoom() < 14 ? 15 : map.getZoom());
+          }
+
+          // geofence check (client-side quick check)
+          const dist = map.distance([lat, lng], restrictedZone.getLatLng());
+          if (dist <= restrictedZone.getRadius()) {
+            showToast('error', '⚠ You have entered a restricted area!');
+            log('Entered restricted zone (client): distance ' + Math.round(dist) + ' m');
+            // TODO: POST event to backend /api/alert for authority notification
+          }
+
+          // optional: send location to backend
+          // fetch('/api/updateLocation', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({lat,lng,ts:Date.now()}) });
+
+        },
+        err => {
+          showToast('error', 'Could not get location: ' + err.message, 8000);
+          log('Geolocation error: ' + err.message);
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+      );
+    } else {
+      showToast('error', 'Geolocation not supported by your browser');
+    }
+
+    // ========== Controls ==========
+    document.getElementById('centerBtn').addEventListener('click', () => {
+      if (userMarker) map.setView(userMarker.getLatLng(), 15);
+    });
+    document.getElementById('toggleFollow').addEventListener('click', (e) => {
+      followUser = !followUser;
+      showToast('info', followUser ? 'Follow ON' : 'Follow OFF', 2000);
+      log('Follow mode: ' + (followUser ? 'ON' : 'OFF'));
+    });
+
   </script>
-<script src="cp1.js"></script>
 </body>
 </html>
