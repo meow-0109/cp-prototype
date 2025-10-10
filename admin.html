@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard - Smart Tourist Safety</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50">
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-xl font-semibold">Admin Dashboard</h1>
+    <a href="/" class="text-sky-600 hover:underline">← Back to Tourist View</a>
+  </header>
+
+  <main class="max-w-6xl mx-auto p-6 space-y-6">
+    <section class="bg-white p-5 rounded-lg shadow">
+      <h2 class="text-lg font-medium mb-3">Registered Tourists</h2>
+      <table id="touristTable" class="w-full text-sm border-collapse border">
+        <thead class="bg-sky-100">
+          <tr><th class="p-2 border">Name</th><th class="p-2 border">Age</th><th class="p-2 border">Contact</th><th class="p-2 border">Time</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="bg-white p-5 rounded-lg shadow">
+      <h2 class="text-lg font-medium mb-3">Reported Incidents</h2>
+      <table id="incidentTable" class="w-full text-sm border-collapse border">
+        <thead class="bg-red-100">
+          <tr><th class="p-2 border">Description</th><th class="p-2 border">Time</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="bg-white p-5 rounded-lg shadow">
+      <h2 class="text-lg font-medium mb-3">Crowd Status</h2>
+      <div id="crowdInfo" class="text-sm text-slate-700">Loading...</div>
+    </section>
+  </main>
+
+  <script src="/static/admin.js"></script>
+</body>
+</html>
