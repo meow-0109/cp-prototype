@@ -1,3 +1,14 @@
+
+ <img width="1366" height="768" alt="Z1" src="https://github.com/user-attachments/assets/45e4700b-dccd-4a2c-9a9e-37c0d18b13a2" />
+ <img width="1366" height="768" alt="z7" src="https://github.com/user-attachments/assets/97ebb7a2-9117-478b-9926-319cf93359ad" />
+<img width="1366" height="768" alt="Z6" src="https://github.com/user-attachments/assets/64180154-a43b-4472-b806-3020f2371627" />
+<img width="1366" height="768" alt="Z5" src="https://github.com/user-attachments/assets/f3d35f0c-6af0-478b-8220-ca812bdfbcae" />
+<img width="1366" height="768" alt="Z4" src="https://github.com/user-attachments/assets/448fdb08-116f-45ac-9484-4d699718f4dc" />
+<img width="1366" height="768" alt="Z3" src="https://github.com/user-attachments/assets/2d10b907-596b-47f9-8c0f-c460b904fe45" />
+<img width="1366" height="768" alt="Z2" src="https://github.com/user-attachments/assets/59e85af6-5336-46b2-b90d-a4456fa05614" />
+
+
+ 
  🛡️ Smart Tourist Safety System
 
 The **Smart Tourist Safety System** is a comprehensive web-based safety platform designed to enhance the security of tourists using modern web technologies, real-time location tracking, QR-code–based identification, and emergency incident reporting.  
@@ -100,19 +111,6 @@ python app.py
 5️⃣ Open the Application
 Open index.html in your browser
 or serve it using Flask if required
-
-OUTCOME
-<img width="1366" height="768" alt="z7" src="https://github.com/user-attachments/assets/60a23918-ad29-45b8-a817-c496fa8751ab" />
-<img width="1366" height="768" alt="Z6" src="https://github.com/user-attachments/assets/a25087a7-4f30-4800-9b74-4b0df73094f5" />
-<img width="1366" height="768" alt="Z5" src="https://github.com/user-attachments/assets/2ee8b2f5-53a2-41dd-9791-caa311723288" />
-<img width="1366" height="768" alt="Z4" src="https://github.com/user-attachments/assets/864fca19-6a7a-43e8-9acb-7972152f4817" />
-<img width="1366" height="768" alt="Z3" src="https://github.com/user-attachments/assets/58e6578c-d226-4c59-b044-b9ac0d320ce6" />
-<img width="1366" height="768" alt="Z2" src="https://github.com/user-attachments/assets/92ffa505-c5f5-4e4f-8efb-d47650dbebd9" />
-<img width="1366" height="768" alt="Z1" src="https://github.com/user-attachments/assets/f012e6fc-24fa-40ec-ae9a-0eb0b14c30a6" />
-
-
-
-
 
 
 
