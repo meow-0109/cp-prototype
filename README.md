@@ -59,16 +59,6 @@ The Smart Tourist Safety System addresses these challenges by integrating **QR-b
 
 ---
 
-## 📂 Project Structure
-
-
-
-## 🏗️ System Architecture
-
-
-
----
-
 ## ⚙️ Installation & Setup
 
  1️⃣ Clone the Repository
@@ -111,14 +101,17 @@ python app.py
 Open index.html in your browser
 or serve it using Flask if required
 
+OUTCOME
+<img width="1366" height="768" alt="z7" src="https://github.com/user-attachments/assets/60a23918-ad29-45b8-a817-c496fa8751ab" />
+<img width="1366" height="768" alt="Z6" src="https://github.com/user-attachments/assets/a25087a7-4f30-4800-9b74-4b0df73094f5" />
+<img width="1366" height="768" alt="Z5" src="https://github.com/user-attachments/assets/2ee8b2f5-53a2-41dd-9791-caa311723288" />
+<img width="1366" height="768" alt="Z4" src="https://github.com/user-attachments/assets/864fca19-6a7a-43e8-9acb-7972152f4817" />
+<img width="1366" height="768" alt="Z3" src="https://github.com/user-attachments/assets/58e6578c-d226-4c59-b044-b9ac0d320ce6" />
+<img width="1366" height="768" alt="Z2" src="https://github.com/user-attachments/assets/92ffa505-c5f5-4e4f-8efb-d47650dbebd9" />
+<img width="1366" height="768" alt="Z1" src="https://github.com/user-attachments/assets/f012e6fc-24fa-40ec-ae9a-0eb0b14c30a6" />
 
-<img width="1366" height="768" alt="Z1" src="https://github.com/user-attachments/assets/1d16210d-47d4-452f-94f2-2495c157cf57" />
-<img width="1366" height="768" alt="z7" src="https://github.com/user-attachments/assets/813d6c50-4813-47e6-afc5-11b445d8ac97" />
-<img width="1366" height="768" alt="Z6" src="https://github.com/user-attachments/assets/52e3acb9-260d-47a8-9d53-fff1ad995ffe" />
-<img width="1366" height="768" alt="Z5" src="https://github.com/user-attachments/assets/4c14bea4-56ae-48b9-af26-d55914660b16" />
-<img width="1366" height="768" alt="Z4" src="https://github.com/user-attachments/assets/e71549fa-e665-487e-be05-7fdfdc0181c9" />
-<img width="1366" height="768" alt="Z3" src="https://github.com/user-attachments/assets/c6d6b9ab-fa47-44c5-b502-166b7e402bd7" />
-<img width="1366" height="768" alt="Z2" src="https://github.com/user-attachments/assets/1e807ec4-f0ee-4d05-89f1-e0ea04ca6044" />
+
+
 
 
 
