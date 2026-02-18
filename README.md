@@ -6,6 +6,8 @@
 <img width="1366" height="768" alt="Z4" src="https://github.com/user-attachments/assets/448fdb08-116f-45ac-9484-4d699718f4dc" />
 <img width="1366" height="768" alt="Z3" src="https://github.com/user-attachments/assets/2d10b907-596b-47f9-8c0f-c460b904fe45" />
 <img width="1366" height="768" alt="Z2" src="https://github.com/user-attachments/assets/59e85af6-5336-46b2-b90d-a4456fa05614" />
+<img width="1366" height="768" alt="Screenshot (129)" src="https://github.com/user-attachments/assets/dec10308-1259-4a65-a559-fa9e393f2283" />
+<img width="1366" height="768" alt="Screenshot (128)" src="https://github.com/user-attachments/assets/358eaa23-2369-428d-a50c-21e87869a776" />
 
 
  
@@ -72,14 +74,17 @@ The Smart Tourist Safety System addresses these challenges by integrating **QR-b
 
 ## ⚙️ Installation & Setup
 
- 1️⃣ Clone the Repository
+ 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/smart-tourist-safety.git
 cd smart-tourist-safety
-
+```
+2. Install requirements
+```
 pip install -r requirements.txt
-
-
+```
+3.Database setup
+```
 CREATE DATABASE tourist_safety;
 
 USE tourist_safety;
@@ -105,10 +110,15 @@ CREATE TABLE locations (
     lng DOUBLE,
     ts BIGINT
 );
+```
+4. How to run
+```
 run backend
 python app.py
+```
 
-5️⃣ Open the Application
+5.Open the Application
+
 Open index.html in your browser
 or serve it using Flask if required
 
